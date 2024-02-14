@@ -1,5 +1,12 @@
 import java.awt.BorderLayout;
 import java.awt.GridLayout;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.ObjectInput;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutput;
+import java.io.ObjectOutputStream;
 import java.util.ArrayList;
 
 import javax.sound.midi.MidiEvent;
@@ -58,6 +65,14 @@ public class MusicApp {
         JButton tempoDown = new JButton("Slower");
         tempoDown.addActionListener(e -> changeTempo(0.97f));
         buttonArea.add(tempoDown);
+
+        JButton saveButton = new JButton("Save");
+        saveButton.addActionListener(e -> saveFile());
+        buttonArea.add(saveButton);
+
+        JButton loadButton = new JButton("Load");
+        loadButton.addActionListener(e -> loadFile());
+        buttonArea.add(loadButton);
 
         Box instrumentNamesArea = new Box(BoxLayout.Y_AXIS);
         for (String instrumentName : instrumentNames) {
@@ -166,5 +181,37 @@ public class MusicApp {
             e.printStackTrace();
         }
         return event;
+    }
+
+    private void saveFile() {
+        boolean[] fieldCondition = new boolean[256];
+        for (int i = 0; i < 256; i++) {
+            JCheckBox fieldChoice = listOfChoiceCheckboxes.get(i);
+            if (fieldChoice.isSelected()) {
+                fieldCondition[i] = true;
+            }
+        }
+        try (ObjectOutputStream os = new ObjectOutputStream(new FileOutputStream("Composition.ser"))) {
+            os.writeObject(fieldCondition);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    private void loadFile() {
+        boolean[] fieldCondition = null;
+        try (ObjectInputStream is = new ObjectInputStream(new FileInputStream("Composition.ser"))) {
+            fieldCondition = (boolean[]) is.readObject();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        for (int i = 0; i < 256; i++) {
+            JCheckBox fieldChoice = listOfChoiceCheckboxes.get(i);
+            fieldChoice.setSelected(fieldCondition[i]);
+        }
+
+        sequencer.stop();
+        createSongTracks();
     }
 }
