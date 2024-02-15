@@ -19,62 +19,71 @@ public class Calculator {
         result = 0;
         operation = ' ';
 
+        // Main window
         JFrame frame = new JFrame("Calculator");
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        frame.setSize(450, 700);
+        ImageIcon icon = new ImageIcon("src\\icon.png");
+        frame.setIconImage(icon.getImage());
+
+        // Updated color scheme
+        Color backgroundColor = new Color(235, 245, 251); // Soft, almost white blue
+        Color buttonColor = new Color(207, 226, 243); // Gentle, muted blue
+        Color operatorButtonColor = new Color(97, 145, 197); // Vivid, but not too bright blue
+        Color textColor = new Color(25, 25, 112); // Deep, dark blue
 
         JPanel resultPanel = new JPanel();
-        resultPanel.setBackground(new Color(250, 250, 250)); 
+        resultPanel.setBackground(backgroundColor);
         resultPanel.setLayout(new BorderLayout());
         resultPanel.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
 
-        resultLabel = new JLabel("");
-        resultLabel.setFont(new Font("SansSerif", Font.PLAIN, 30));
-        resultLabel.setForeground(Color.BLACK);
+        resultLabel = new JLabel("0");
+        resultLabel.setFont(new Font("SansSerif", Font.BOLD, 50));
+        resultLabel.setForeground(textColor);
 
         resultPanel.add(BorderLayout.LINE_END, resultLabel);
 
         JPanel buttonPanel = new JPanel();
-        buttonPanel.setLayout(new GridLayout(4, 4, 10, 10));
-        buttonPanel.setBackground(new Color(232, 232, 232)); 
+        buttonPanel.setLayout(new GridLayout(6, 4, 10, 10));
+        buttonPanel.setBackground(backgroundColor);
         buttonPanel.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
 
         String[] buttonLabels = {
-                "7", "8", "9", "/",
-                "4", "5", "6", "*",
-                "1", "2", "3", "-",
-                "+/-", "0", "=", "+"
+                "%", "CE", "C", "<X",
+                "1/x", "x*x", "x*1/2", "/",
+                "7", "8", "9", "X",
+                "4", "5", "6", "-",
+                "1", "2", "3", "+",
+                "+/-", "0", ",", "="
         };
 
         for (String label : buttonLabels) {
             JButton button = new JButton(label);
             button.setPreferredSize(new Dimension(60, 60));
-            button.setFont(new Font("SansSerif", Font.PLAIN, 20));
+            button.setFont(new Font("SansSerif", Font.BOLD, 20));
+            button.setForeground(textColor);
 
             button.addActionListener(e -> {
                 handleButtonClick(button.getText());
 
                 // Add visual feedback with a brief color change
-                button.setBackground(getComplementaryGray(button.getBackground()));
-                Timer timer = new Timer(100, new ActionListener() {
-                    @Override
-                    public void actionPerformed(ActionEvent evt) {
-                        button.setBackground(Character.isDigit(button.getText().charAt(0))
-                                ? new Color(255, 255, 255) // White for digits
-                                : new Color(255, 193, 7)); // Amber for operators
-                        ((Timer) evt.getSource()).stop();
-                    }
+                button.setBackground(getComplementaryColor(button.getBackground()));
+                Timer timer = new Timer(100, evt -> {
+                    button.setBackground(Character.isDigit(button.getText().charAt(0))
+                            ? buttonColor
+                            : operatorButtonColor);
+                    ((Timer) evt.getSource()).stop();
                 });
                 timer.setRepeats(false);
                 timer.start();
             });
 
             if (Character.isDigit(label.charAt(0))) {
-                button.setBackground(new Color(255, 255, 255)); // White
+                button.setBackground(buttonColor);
             } else {
-                button.setBackground(new Color(255, 193, 7)); // Amber
+                button.setBackground(operatorButtonColor);
             }
 
-            // Add rounded corners
             button.setFocusPainted(false);
             button.setBorderPainted(false);
             button.setContentAreaFilled(false);
@@ -86,20 +95,20 @@ public class Calculator {
 
         JPanel northPanel = new JPanel();
         northPanel.setLayout(new BorderLayout());
-        northPanel.setBackground(new Color(250, 250, 250)); // Light Gray
+        northPanel.setBackground(backgroundColor);
         northPanel.add(resultPanel, BorderLayout.SOUTH);
 
         frame.getContentPane().add(BorderLayout.SOUTH, buttonPanel);
         frame.add(BorderLayout.CENTER, northPanel);
 
-        frame.setSize(400, 600);
         frame.setVisible(true);
     }
 
-    private Color getComplementaryGray(Color originalColor) {
-        int grayValue = (int) (0.7 * originalColor.getRed() + 0.21 * originalColor.getGreen()
-                + 0.07 * originalColor.getBlue());
-        return new Color(grayValue, grayValue, grayValue);
+    private Color getComplementaryColor(Color originalColor) {
+        // Slightly lighten the button color for a visual effect when pressed
+        float[] hsbVals = Color.RGBtoHSB(originalColor.getRed(), originalColor.getGreen(), originalColor.getBlue(),
+                null);
+        return Color.getHSBColor(hsbVals[0], hsbVals[1] * 0.8f, Math.min(1.0f, hsbVals[2] * 1.2f));
     }
 
     private void handleButtonClick(String button) {
