@@ -78,11 +78,16 @@ public class Calculator {
                 timer.start();
             });
 
-            if (Character.isDigit(label.charAt(0))) {
+            if (label.equals("1") || label.equals("2") || label.equals("3") ||
+                    label.equals("4") || label.equals("5") || label.equals("6") ||
+                    label.equals("7") || label.equals("8") || label.equals("9") ||
+                    label.equals("0")) {
                 button.setBackground(buttonColor);
             } else {
                 button.setBackground(operatorButtonColor);
             }
+
+            String dupa = "dupa";
 
             button.setFocusPainted(false);
             button.setBorderPainted(false);
