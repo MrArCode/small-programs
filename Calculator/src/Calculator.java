@@ -20,15 +20,17 @@ public class Calculator {
         // Main window
         JFrame frame = new JFrame("Calculator");
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        frame.setSize(450, 700);
+        frame.setSize(400, 700);
+
+        // Icon setup
         ImageIcon icon = new ImageIcon("src\\icon.png");
         frame.setIconImage(icon.getImage());
 
-        // Updated color scheme
-        Color backgroundColor = new Color(235, 245, 251); // Soft, almost white blue
-        Color buttonColor = new Color(207, 226, 243); // Gentle, muted blue
-        Color operatorButtonColor = new Color(97, 145, 197); // Vivid, but not too bright blue
-        Color textColor = new Color(25, 25, 112); // Deep, dark blue
+        // Colors
+        Color backgroundColor = new Color(235, 245, 251);
+        Color buttonColor = new Color(207, 226, 243);
+        Color operatorButtonColor = new Color(97, 145, 197);
+        Color textColor = new Color(25, 25, 112);
 
         JPanel resultPanel = new JPanel();
         resultPanel.setBackground(backgroundColor);
@@ -47,9 +49,9 @@ public class Calculator {
         buttonPanel.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
 
         String[] buttonLabels = {
-                "%", "CE", "C", "<X",
-                "1/x", "x*x", "x*1/2", "/",
-                "7", "8", "9", "X",
+                "%", "CE", "C", "⌫",
+                "1/x", "x*2", "√x", "÷",
+                "7", "8", "9", "*",
                 "4", "5", "6", "-",
                 "1", "2", "3", "+",
                 "+/-", "0", ",", "="
@@ -57,8 +59,8 @@ public class Calculator {
 
         for (String label : buttonLabels) {
             JButton button = new JButton(label);
-            button.setPreferredSize(new Dimension(60, 60));
-            button.setFont(new Font("SansSerif", Font.BOLD, 20));
+            button.setPreferredSize(new Dimension(40, 60));
+            button.setFont(new Font("SansSerif", Font.BOLD, 25));
             button.setForeground(textColor);
 
             button.addActionListener(e -> {
@@ -109,6 +111,7 @@ public class Calculator {
         return Color.getHSBColor(hsbVals[0], hsbVals[1] * 0.8f, Math.min(1.0f, hsbVals[2] * 1.2f));
     }
 
+    // ===============================================================================================================================================================================================================
     private void handleButtonClick(String button) {
         switch (button) {
             case "+":
