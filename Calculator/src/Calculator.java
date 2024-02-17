@@ -1,5 +1,7 @@
 import javax.swing.*;
 import java.awt.*;
+import java.math.BigDecimal;
+import java.text.DecimalFormat;
 
 public class Calculator {
     private JLabel resultLabel;
@@ -50,7 +52,7 @@ public class Calculator {
 
         String[] buttonLabels = {
                 "%", "CE", "C", "⌫",
-                "1/x", "x*2", "√x", "÷",
+                "1/x", "x^2", "√x", "÷",
                 "7", "8", "9", "*",
                 "4", "5", "6", "-",
                 "1", "2", "3", "+",
@@ -117,7 +119,8 @@ public class Calculator {
             case "+":
             case "-":
             case "*":
-            case "/":
+            case "÷":
+
                 performOperation();
                 operation = button.charAt(0);
                 break;
@@ -151,7 +154,7 @@ public class Calculator {
                 case '*':
                     result *= currentNumber;
                     break;
-                case '/':
+                case '÷':
                     if (currentNumber != 0) {
                         result /= currentNumber;
                     } else {
