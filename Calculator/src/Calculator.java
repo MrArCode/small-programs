@@ -113,6 +113,7 @@ public class Calculator {
         return Color.getHSBColor(hsbVals[0], hsbVals[1] * 0.8f, Math.min(1.0f, hsbVals[2] * 1.2f));
     }
 
+    // dupa
     // ===============================================================================================================================================================================================================
     private void handleButtonClick(String button) {
         switch (button) {
