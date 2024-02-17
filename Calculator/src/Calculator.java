@@ -1,13 +1,16 @@
 import javax.swing.*;
 import java.awt.*;
-import java.math.BigDecimal;
-import java.text.DecimalFormat;
 
 public class Calculator {
     private JLabel resultLabel;
     private StringBuilder currentInput;
     private double result;
     private char operation;
+    private char operation2;
+    private double num1;
+    private double num2;
+    private double currentNumber;
+    private boolean isResultDisplayed = false;
 
     public static void main(String[] args) {
         Calculator calculator = new Calculator();
@@ -15,9 +18,13 @@ public class Calculator {
     }
 
     private void createAndShowGUI() {
-        currentInput = new StringBuilder();
+        // currentInput = new StringBuilder();
         result = 0;
         operation = ' ';
+        operation2 = ' ';
+        num1 = 0;
+        num2 = 0;
+        currentNumber = 0;
 
         // Main window
         JFrame frame = new JFrame("Calculator");
@@ -113,81 +120,115 @@ public class Calculator {
         return Color.getHSBColor(hsbVals[0], hsbVals[1] * 0.8f, Math.min(1.0f, hsbVals[2] * 1.2f));
     }
 
-    // dupa
     // ===============================================================================================================================================================================================================
+
     private void handleButtonClick(String button) {
         switch (button) {
+            case "0":
+            case "1":
+            case "2":
+            case "3":
+            case "4":
+            case "5":
+            case "6":
+            case "7":
+            case "8":
+            case "9":
+                saveNumber(button);
+                break;
             case "+":
-            case "-":
-            case "*":
-            case "÷":
-
-                performOperation();
-                operation = button.charAt(0);
-                break;
-
-            case "=":
-                performOperation();
-                operation = ' ';
-                break;
-
-            case "+/-":
-                changeSign();
-                break;
 
             default:
-                currentInput.append(button);
-                resultLabel.setText(currentInput.toString());
                 break;
         }
     }
 
-    private void performOperation() {
-        if (currentInput.length() > 0) {
-            double currentNumber = Double.parseDouble(currentInput.toString());
-            switch (operation) {
-                case '+':
-                    result += currentNumber;
-                    break;
-                case '-':
-                    result -= currentNumber;
-                    break;
-                case '*':
-                    result *= currentNumber;
-                    break;
-                case '÷':
-                    if (currentNumber != 0) {
-                        result /= currentNumber;
-                    } else {
-                        resultLabel.setText("Error");
-                        resetCalculator();
-                        return;
-                    }
-                    break;
-                default:
-                    result = currentNumber;
-            }
-            resultLabel.setText(String.valueOf(result));
-            resetCurrentInput();
+    private void saveNumber(String numberOnButton) {
+        currentNumber = currentNumber * 10 + Double.parseDouble(numberOnButton);
+        resultLabel.setText(String.valueOf(currentNumber));
+    }
+
+    private void sumOperation(String button) {
+        operation = button.charAt(0);
+        if (operation2 != '\0') {
+
         }
+
     }
 
-    private void changeSign() {
-        if (currentInput.length() > 0) {
-            double currentNumber = Double.parseDouble(currentInput.toString());
-            currentNumber = -currentNumber;
-            resultLabel.setText(String.valueOf(currentNumber));
-            resetCurrentInput();
-        }
-    }
+    // private void handleButtonClick(String button) {
+    // switch (button) {
+    // case "+":
+    // case "-":
+    // case "*":
+    // case "÷":
 
-    private void resetCurrentInput() {
-        currentInput.setLength(0);
-    }
+    // performOperation();
+    // operation = button.charAt(0);
+    // break;
 
-    private void resetCalculator() {
-        result = 0;
-        resetCurrentInput();
-        operation = ' ';
-    }
+    // case "=":
+    // performOperation();
+    // operation = ' ';
+    // break;
+
+    // case "+/-":
+    // changeSign();
+    // break;
+
+    // default:
+    // currentInput.append(button);
+    // resultLabel.setText(currentInput.toString());
+    // break;
+    // }
+    // }
+
+    // private void performOperation() {
+    // if (currentInput.length() > 0) {
+    // double currentNumber = Double.parseDouble(currentInput.toString());
+    // switch (operation) {
+    // case '+':
+    // result += currentNumber;
+    // break;
+    // case '-':
+    // result -= currentNumber;
+    // break;
+    // case '*':
+    // result *= currentNumber;
+    // break;
+    // case '÷':
+    // if (currentNumber != 0) {
+    // result /= currentNumber;
+    // } else {
+    // resultLabel.setText("Error");
+    // resetCalculator();
+    // return;
+    // }
+    // break;
+    // default:
+    // result = currentNumber;
+    // }
+    // resultLabel.setText(String.valueOf(result));
+    // resetCurrentInput();
+    // }
+    // }
+
+    // private void changeSign() {
+    // if (currentInput.length() > 0) {
+    // double currentNumber = Double.parseDouble(currentInput.toString());
+    // currentNumber = -currentNumber;
+    // resultLabel.setText(String.valueOf(currentNumber));
+    // resetCurrentInput();
+    // }
+    // }
+
+    // private void resetCurrentInput() {
+    // currentInput.setLength(0);
+    // }
+
+    // private void resetCalculator() {
+    // result = 0;
+    // resetCurrentInput();
+    // operation = ' ';
+    // }
 }
