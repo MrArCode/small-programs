@@ -231,8 +231,57 @@ public class Calculator {
                     }
                 }
                 break;
+
+            case "C":
+                isOperation = false;
+                isSecondNumber = false;
+                firstNumber = 0;
+                secondNumber = 0;
+                memoryNumber = 0;
+                operation = ' ';
+                resultLabel.setText(String.valueOf(firstNumber));
+                break;
+
+            case "%":
+                if (isSecondNumber) {
+                    secondNumber *= 0.01;
+                    memoryNumber = secondNumber;
+                    resultLabel.setText(String.valueOf(secondNumber));
+                } else {
+                    firstNumber *= 0.01;
+                    resultLabel.setText(String.valueOf(firstNumber));
+
+                }
+                break;
+
+            case "x^2":
+                if (isSecondNumber) {
+                    secondNumber = secondNumber * secondNumber;
+                    memoryNumber = secondNumber;
+                    resultLabel.setText(String.valueOf(secondNumber));
+                } else {
+                    firstNumber = firstNumber * firstNumber;
+                    resultLabel.setText(String.valueOf(firstNumber));
+                }
+                break;
+
+            case "√x":
+                if (isSecondNumber) {
+                    secondNumber = Math.sqrt(secondNumber);
+                    memoryNumber = secondNumber;
+                    resultLabel.setText(String.valueOf(secondNumber));
+                } else {
+                    firstNumber = Math.sqrt(firstNumber);
+                    resultLabel.setText(String.valueOf(firstNumber));
+                }
+                break;
+
             default:
                 break;
         }
+    }
+
+    public void exponentiationOperetion() {
+
     }
 }
