@@ -3,14 +3,12 @@ import java.awt.*;
 
 public class Calculator {
     private JLabel resultLabel;
-    private StringBuilder currentInput;
-    private double result;
-    private char operation;
-    private char operation2;
-    private double num1;
-    private double num2;
-    private double currentNumber;
-    private boolean isResultDisplayed = false;
+    private boolean isOperation = false;
+    private boolean isSecondNumber = false;
+    private double firstNumber = 0;
+    private double secondNumber = 0;
+    private double memoryNumber = 0;
+    private char operation = ' ';
 
     public static void main(String[] args) {
         Calculator calculator = new Calculator();
@@ -18,13 +16,6 @@ public class Calculator {
     }
 
     private void createAndShowGUI() {
-        // currentInput = new StringBuilder();
-        result = 0;
-        operation = ' ';
-        operation2 = ' ';
-        num1 = 0;
-        num2 = 0;
-        currentNumber = 0;
 
         // Main window
         JFrame frame = new JFrame("Calculator");
@@ -122,7 +113,7 @@ public class Calculator {
 
     // ===============================================================================================================================================================================================================
 
-    private void handleButtonClick(String button) {
+    public void handleButtonClick(String button) {
         switch (button) {
             case "0":
             case "1":
@@ -134,101 +125,114 @@ public class Calculator {
             case "7":
             case "8":
             case "9":
-                saveNumber(button);
+                if (isOperation == true) {
+                    secondNumber = secondNumber * 10 + Double.parseDouble(button);
+                    resultLabel.setText(String.valueOf(secondNumber));
+                    isSecondNumber = true;
+                    memoryNumber = secondNumber;
+                } else {
+                    firstNumber = firstNumber * 10 + Double.parseDouble(button);
+                    resultLabel.setText(String.valueOf(firstNumber));
+                }
                 break;
             case "+":
+            case "-":
+            case "*":
+            case "÷":
+                memoryNumber = firstNumber;
+                isOperation = true;
+                operation = button.charAt(0);
+                break;
+            case "=":
+                if (isOperation == true && isSecondNumber == false) {
+                    switch (operation) {
+                        case '+':
+                            firstNumber += memoryNumber;
+                            break;
+                        case '-':
+                            firstNumber -= memoryNumber;
+                            break;
+                        case '*':
+                            firstNumber *= memoryNumber;
+                            break;
+                        case '÷':
+                            if (memoryNumber != 0) {
+                                firstNumber /= memoryNumber;
+                            } else {
+                                resultLabel.setText("ERROR");// ================================================
+                            }
+                            break;
+                        default:
+                            break;
+                    }
+                    resultLabel.setText(String.valueOf(firstNumber));
+                } else if (isOperation == true && isSecondNumber == true) {
+                    switch (operation) {
+                        case '+':
+                            firstNumber += secondNumber;
+                            secondNumber = 0;
+                            resultLabel.setText(String.valueOf(firstNumber));
+                            isSecondNumber = false;
+                            isOperation = false;
+                            break;
+                        case '-':
+                            firstNumber -= secondNumber;
+                            secondNumber = 0;
+                            resultLabel.setText(String.valueOf(firstNumber));
+                            isSecondNumber = false;
+                            isOperation = false;
+                            break;
+                        case '*':
+                            firstNumber *= secondNumber;
+                            secondNumber = 0;
+                            resultLabel.setText(String.valueOf(firstNumber));
+                            isSecondNumber = false;
+                            isOperation = false;
+                            break;
+                        case '÷':
+                            if (secondNumber != 0) {
+                                firstNumber /= secondNumber;
+                                secondNumber = 0;
+                                resultLabel.setText(String.valueOf(firstNumber));
+                                isSecondNumber = false;
+                                isOperation = false;
+                            } else {
+                                resultLabel.setText("ERROR");// ================================================
+                            }
+                            break;
+                        default:
+                            break;
+                    }
 
+                } else if (isOperation == false && isSecondNumber == false) {
+                    switch (operation) {
+                        case '+':
+                            firstNumber += memoryNumber;
+                            resultLabel.setText(String.valueOf(firstNumber));
+                            break;
+                        case '-':
+                            firstNumber -= memoryNumber;
+                            resultLabel.setText(String.valueOf(firstNumber));
+                            break;
+                        case '*':
+                            firstNumber *= memoryNumber;
+                            resultLabel.setText(String.valueOf(firstNumber));
+                            break;
+                        case '÷':
+                            if (memoryNumber != 0) {
+                                firstNumber /= memoryNumber;
+                                resultLabel.setText(String.valueOf(firstNumber));
+                            } else {
+                                resultLabel.setText("ERROR");// ================================================
+                            }
+                            break;
+                        default:
+                            break;
+                    }
+                }
+                break;
             default:
                 break;
         }
     }
-
-    private void saveNumber(String numberOnButton) {
-        currentNumber = currentNumber * 10 + Double.parseDouble(numberOnButton);
-        resultLabel.setText(String.valueOf(currentNumber));
-    }
-
-    private void sumOperation(String button) {
-        operation = button.charAt(0);
-        if (operation2 != '\0') {
-
-        }
-
-    }
-
-    // private void handleButtonClick(String button) {
-    // switch (button) {
-    // case "+":
-    // case "-":
-    // case "*":
-    // case "÷":
-
-    // performOperation();
-    // operation = button.charAt(0);
-    // break;
-
-    // case "=":
-    // performOperation();
-    // operation = ' ';
-    // break;
-
-    // case "+/-":
-    // changeSign();
-    // break;
-
-    // default:
-    // currentInput.append(button);
-    // resultLabel.setText(currentInput.toString());
-    // break;
-    // }
-    // }
-
-    // private void performOperation() {
-    // if (currentInput.length() > 0) {
-    // double currentNumber = Double.parseDouble(currentInput.toString());
-    // switch (operation) {
-    // case '+':
-    // result += currentNumber;
-    // break;
-    // case '-':
-    // result -= currentNumber;
-    // break;
-    // case '*':
-    // result *= currentNumber;
-    // break;
-    // case '÷':
-    // if (currentNumber != 0) {
-    // result /= currentNumber;
-    // } else {
-    // resultLabel.setText("Error");
-    // resetCalculator();
-    // return;
-    // }
-    // break;
-    // default:
-    // result = currentNumber;
-    // }
-    // resultLabel.setText(String.valueOf(result));
-    // resetCurrentInput();
-    // }
-    // }
-
-    // private void changeSign() {
-    // if (currentInput.length() > 0) {
-    // double currentNumber = Double.parseDouble(currentInput.toString());
-    // currentNumber = -currentNumber;
-    // resultLabel.setText(String.valueOf(currentNumber));
-    // resetCurrentInput();
-    // }
-    // }
-
-    // private void resetCurrentInput() {
-    // currentInput.setLength(0);
-    // }
-
-    // private void resetCalculator() {
-    // result = 0;
-    // resetCurrentInput();
-    // operation = ' ';
-    // }
 }
