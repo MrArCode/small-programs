@@ -243,15 +243,21 @@ public class Calculator {
                 break;
 
             case "%":
-                if (isSecondNumber) {
-                    secondNumber *= 0.01;
-                    memoryNumber = secondNumber;
-                    resultLabel.setText(String.valueOf(secondNumber));
-                } else {
+                if (isOperation == false && isSecondNumber == false) {
                     firstNumber *= 0.01;
                     resultLabel.setText(String.valueOf(firstNumber));
+                } else if (isOperation == true && isSecondNumber == false) {
+                    secondNumber = (firstNumber / 100) * firstNumber;
+                    memoryNumber = secondNumber;
+                    resultLabel.setText(String.valueOf(secondNumber));
+                    isSecondNumber = true;
 
+                } else if (isOperation == true && isSecondNumber == true) {
+                    secondNumber = (secondNumber / 100) * secondNumber;
+                    memoryNumber = secondNumber;
+                    resultLabel.setText(String.valueOf(secondNumber));
                 }
+
                 break;
 
             case "x^2":
@@ -275,6 +281,24 @@ public class Calculator {
                     resultLabel.setText(String.valueOf(firstNumber));
                 }
                 break;
+            case "+/-":
+                if (isOperation == false && isSecondNumber == false) {
+                    firstNumber = firstNumber * -1;
+                    resultLabel.setText(String.valueOf(firstNumber));
+                } else if (isOperation == true && isSecondNumber == true) {
+                    secondNumber = secondNumber * -1;
+                    resultLabel.setText(String.valueOf(secondNumber));
+                }
+            case "1/x":
+                if (isOperation == false && isSecondNumber == false) {
+                    firstNumber = 1 / firstNumber;
+                    resultLabel.setText(String.valueOf(firstNumber));
+                } else if (isOperation == true && isSecondNumber == true) {
+                    secondNumber = 1 / secondNumber;
+                    memoryNumber = secondNumber;
+                    resultLabel.setText(String.valueOf(secondNumber));
+                }
+            case ",":
 
             default:
                 break;
