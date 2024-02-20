@@ -9,6 +9,10 @@ public class Calculator {
     private double secondNumber = 0;
     private double memoryNumber = 0;
     private char operation = ' ';
+    private boolean isDot = false;
+    private double postDotNumberDOUBLE = 0;
+    private int postDotNumberINT = 0;
+    private int amountOfNumbersAfterDot = 0;
 
     public static void main(String[] args) {
         Calculator calculator = new Calculator();
@@ -37,7 +41,7 @@ public class Calculator {
         resultPanel.setLayout(new BorderLayout());
         resultPanel.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
 
-        resultLabel = new JLabel("0");
+        resultLabel = new JLabel("0.0");
         resultLabel.setFont(new Font("SansSerif", Font.BOLD, 50));
         resultLabel.setForeground(textColor);
 
@@ -125,12 +129,21 @@ public class Calculator {
             case "7":
             case "8":
             case "9":
-                if (isOperation == true) {
+                if (isOperation == true && isDot == false) {
+
                     secondNumber = secondNumber * 10 + Double.parseDouble(button);
                     resultLabel.setText(String.valueOf(secondNumber));
                     isSecondNumber = true;
                     memoryNumber = secondNumber;
-                } else {
+
+                } else if (isOperation == true && isDot == true && isSecondNumber == true) {
+                    postDotNumberINT = postDotNumberINT * 10 + (Integer.parseInt(button));
+                    resultLabel.setText(String.valueOf((int) secondNumber) + "." + String.valueOf(postDotNumberINT));
+
+                } else if (isDot == true && isOperation == false) {
+                    postDotNumberINT = postDotNumberINT * 10 + (Integer.parseInt(button));
+                    resultLabel.setText(String.valueOf((int) firstNumber) + "." + String.valueOf(postDotNumberINT));
+                } else if (isDot == false && isOperation == false) {
                     firstNumber = firstNumber * 10 + Double.parseDouble(button);
                     resultLabel.setText(String.valueOf(firstNumber));
                 }
@@ -139,11 +152,25 @@ public class Calculator {
             case "-":
             case "*":
             case "÷":
+                if (isDot == true) {
+                    postDotNumberDOUBLE = addZeroAtBeginning(postDotNumberINT);
+                    firstNumber += postDotNumberDOUBLE;
+                    isDot = false;
+                    postDotNumberDOUBLE = 0;
+                    postDotNumberINT = 0;
+                }
                 memoryNumber = firstNumber;
                 isOperation = true;
                 operation = button.charAt(0);
+
                 break;
             case "=":
+                if (isOperation == true && isDot == true && isSecondNumber == true) {
+                    postDotNumberDOUBLE = addZeroAtBeginning(postDotNumberINT);
+                    secondNumber += postDotNumberDOUBLE;
+                    memoryNumber = secondNumber;
+                    isDot = false;
+                }
                 if (isOperation == true && isSecondNumber == false) {
                     switch (operation) {
                         case '+':
@@ -233,6 +260,10 @@ public class Calculator {
                 break;
 
             case "C":
+                isDot = false;
+                postDotNumberDOUBLE = 0;
+                postDotNumberINT = 0;
+
                 isOperation = false;
                 isSecondNumber = false;
                 firstNumber = 0;
@@ -244,16 +275,36 @@ public class Calculator {
 
             case "%":
                 if (isOperation == false && isSecondNumber == false) {
+                    if (isDot == true) {
+                        postDotNumberDOUBLE = addZeroAtBeginning(postDotNumberINT);
+                        firstNumber += postDotNumberDOUBLE;
+                        isDot = false;
+                        postDotNumberDOUBLE = 0;
+                        postDotNumberINT = 0;
+                    }
+
                     firstNumber *= 0.01;
                     resultLabel.setText(String.valueOf(firstNumber));
                 } else if (isOperation == true && isSecondNumber == false) {
+                    if (isDot == true) {
+                        postDotNumberDOUBLE = addZeroAtBeginning(postDotNumberINT);
+                        secondNumber += postDotNumberDOUBLE;
+                        memoryNumber = secondNumber;
+                        isDot = false;
+                    }
                     secondNumber = (firstNumber / 100) * firstNumber;
                     memoryNumber = secondNumber;
                     resultLabel.setText(String.valueOf(secondNumber));
                     isSecondNumber = true;
 
                 } else if (isOperation == true && isSecondNumber == true) {
-                    secondNumber = (secondNumber / 100) * secondNumber;
+                    if (isDot == true) {
+                        postDotNumberDOUBLE = addZeroAtBeginning(postDotNumberINT);
+                        secondNumber += postDotNumberDOUBLE;
+                        memoryNumber = secondNumber;
+                        isDot = false;
+                    }
+                    secondNumber = (secondNumber / 100) * firstNumber;
                     memoryNumber = secondNumber;
                     resultLabel.setText(String.valueOf(secondNumber));
                 }
@@ -262,10 +313,23 @@ public class Calculator {
 
             case "x^2":
                 if (isSecondNumber) {
+                    if (isDot == true) {
+                        postDotNumberDOUBLE = addZeroAtBeginning(postDotNumberINT);
+                        secondNumber += postDotNumberDOUBLE;
+                        memoryNumber = secondNumber;
+                        isDot = false;
+                    }
                     secondNumber = secondNumber * secondNumber;
                     memoryNumber = secondNumber;
                     resultLabel.setText(String.valueOf(secondNumber));
                 } else {
+                    if (isDot == true) {
+                        postDotNumberDOUBLE = addZeroAtBeginning(postDotNumberINT);
+                        firstNumber += postDotNumberDOUBLE;
+                        isDot = false;
+                        postDotNumberDOUBLE = 0;
+                        postDotNumberINT = 0;
+                    }
                     firstNumber = firstNumber * firstNumber;
                     resultLabel.setText(String.valueOf(firstNumber));
                 }
@@ -273,39 +337,93 @@ public class Calculator {
 
             case "√x":
                 if (isSecondNumber) {
+                    if (isDot == true) {
+                        postDotNumberDOUBLE = addZeroAtBeginning(postDotNumberINT);
+                        secondNumber += postDotNumberDOUBLE;
+                        memoryNumber = secondNumber;
+                        isDot = false;
+                    }
                     secondNumber = Math.sqrt(secondNumber);
                     memoryNumber = secondNumber;
                     resultLabel.setText(String.valueOf(secondNumber));
                 } else {
+                    if (isDot == true) {
+                        postDotNumberDOUBLE = addZeroAtBeginning(postDotNumberINT);
+                        firstNumber += postDotNumberDOUBLE;
+                        isDot = false;
+                        postDotNumberDOUBLE = 0;
+                        postDotNumberINT = 0;
+                    }
                     firstNumber = Math.sqrt(firstNumber);
                     resultLabel.setText(String.valueOf(firstNumber));
                 }
                 break;
+
             case "+/-":
                 if (isOperation == false && isSecondNumber == false) {
+                    if (isDot == true) {
+                        postDotNumberDOUBLE = addZeroAtBeginning(postDotNumberINT);
+                        firstNumber += postDotNumberDOUBLE;
+                        isDot = false;
+                        postDotNumberDOUBLE = 0;
+                        postDotNumberINT = 0;
+                    }
                     firstNumber = firstNumber * -1;
                     resultLabel.setText(String.valueOf(firstNumber));
                 } else if (isOperation == true && isSecondNumber == true) {
+                    if (isDot == true) {
+                        postDotNumberDOUBLE = addZeroAtBeginning(postDotNumberINT);
+                        secondNumber += postDotNumberDOUBLE;
+                        memoryNumber = secondNumber;
+                        isDot = false;
+                    }
                     secondNumber = secondNumber * -1;
                     resultLabel.setText(String.valueOf(secondNumber));
+
                 }
+                break;
+
             case "1/x":
                 if (isOperation == false && isSecondNumber == false) {
+                    if (isDot == true) {
+                        postDotNumberDOUBLE = addZeroAtBeginning(postDotNumberINT);
+                        firstNumber += postDotNumberDOUBLE;
+                        isDot = false;
+                        postDotNumberDOUBLE = 0;
+                        postDotNumberINT = 0;
+                    }
                     firstNumber = 1 / firstNumber;
                     resultLabel.setText(String.valueOf(firstNumber));
                 } else if (isOperation == true && isSecondNumber == true) {
+                    if (isDot == true) {
+                        postDotNumberDOUBLE = addZeroAtBeginning(postDotNumberINT);
+                        secondNumber += postDotNumberDOUBLE;
+                        memoryNumber = secondNumber;
+                        isDot = false;
+                    }
                     secondNumber = 1 / secondNumber;
                     memoryNumber = secondNumber;
                     resultLabel.setText(String.valueOf(secondNumber));
                 }
+                break;
+
             case ",":
+                if (isOperation == false && isSecondNumber == false) {
+                    isDot = true;
+
+                } else if (isOperation == true && isSecondNumber == true) {
+                    isDot = true;
+                }
+                break;
 
             default:
                 break;
         }
     }
 
-    public void exponentiationOperetion() {
-
+    public static double addZeroAtBeginning(int a) {
+        int numberOfDigits = (int) Math.log10(a) + 1;
+        double b = a / Math.pow(10, numberOfDigits);
+        return b;
     }
 }
