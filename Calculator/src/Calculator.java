@@ -281,6 +281,8 @@ public class Calculator {
                 } else if (isOperation == true && isSecondNumber == false) {
                     operation = ' ';
                 } else if (isOperation == true && isSecondNumber == true) {
+                    postDotNumberDOUBLE = 0;
+                    postDotNumberINT = 0;
                     secondNumber = 0;
                     resultLabel.setText(String.valueOf(secondNumber));
                 }
@@ -310,6 +312,8 @@ public class Calculator {
                         secondNumber += postDotNumberDOUBLE;
                         memoryNumber = secondNumber;
                         isDot = false;
+                        postDotNumberDOUBLE = 0;
+                        postDotNumberINT = 0;
 
                     }
                     if ((secondNumber - Math.round(secondNumber) > 0)) {
@@ -342,6 +346,8 @@ public class Calculator {
                         secondNumber += postDotNumberDOUBLE;
                         memoryNumber = secondNumber;
                         isDot = false;
+                        postDotNumberDOUBLE = 0;
+                        postDotNumberINT = 0;
                     }
                     secondNumber = (firstNumber / 100) * firstNumber;
                     memoryNumber = secondNumber;
@@ -354,6 +360,8 @@ public class Calculator {
                         secondNumber += postDotNumberDOUBLE;
                         memoryNumber = secondNumber;
                         isDot = false;
+                        postDotNumberDOUBLE = 0;
+                        postDotNumberINT = 0;
                     }
                     secondNumber = (secondNumber / 100) * firstNumber;
                     memoryNumber = secondNumber;
@@ -369,6 +377,8 @@ public class Calculator {
                         secondNumber += postDotNumberDOUBLE;
                         memoryNumber = secondNumber;
                         isDot = false;
+                        postDotNumberDOUBLE = 0;
+                        postDotNumberINT = 0;
                     }
                     secondNumber = secondNumber * secondNumber;
                     memoryNumber = secondNumber;
@@ -393,6 +403,8 @@ public class Calculator {
                         secondNumber += postDotNumberDOUBLE;
                         memoryNumber = secondNumber;
                         isDot = false;
+                        postDotNumberDOUBLE = 0;
+                        postDotNumberINT = 0;
                     }
                     secondNumber = Math.sqrt(secondNumber);
                     memoryNumber = secondNumber;
@@ -427,6 +439,8 @@ public class Calculator {
                         secondNumber += postDotNumberDOUBLE;
                         memoryNumber = secondNumber;
                         isDot = false;
+                        postDotNumberDOUBLE = 0;
+                        postDotNumberINT = 0;
                     }
                     secondNumber = secondNumber * -1;
                     resultLabel.setText(String.valueOf(secondNumber));
@@ -451,6 +465,8 @@ public class Calculator {
                         secondNumber += postDotNumberDOUBLE;
                         memoryNumber = secondNumber;
                         isDot = false;
+                        postDotNumberDOUBLE = 0;
+                        postDotNumberINT = 0;
                     }
                     secondNumber = 1 / secondNumber;
                     memoryNumber = secondNumber;
