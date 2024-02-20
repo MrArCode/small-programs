@@ -273,6 +273,57 @@ public class Calculator {
                 resultLabel.setText(String.valueOf(firstNumber));
                 break;
 
+            case "CE":
+                if (isOperation == false && isSecondNumber == false) {
+                    firstNumber = 0;
+                    resultLabel.setText(String.valueOf(firstNumber));
+
+                } else if (isOperation == true && isSecondNumber == false) {
+                    operation = ' ';
+                } else if (isOperation == true && isSecondNumber == true) {
+                    secondNumber = 0;
+                    resultLabel.setText(String.valueOf(secondNumber));
+                }
+                break;
+            case "⌫":
+                if (isOperation == false && isSecondNumber == false) {
+                    if (isDot == true) {
+                        postDotNumberDOUBLE = addZeroAtBeginning(postDotNumberINT);
+                        firstNumber += postDotNumberDOUBLE;
+                        isDot = false;
+                        postDotNumberDOUBLE = 0;
+                        postDotNumberINT = 0;
+                    }
+                    if ((firstNumber - Math.round(firstNumber) > 0)) {
+                        String numberAsText = Double.toString(firstNumber);
+                        String withoutLastDigit = numberAsText.substring(0, numberAsText.length() - 1);
+                        firstNumber = Double.parseDouble(withoutLastDigit);
+                        resultLabel.setText(String.valueOf(firstNumber));
+                    } else {
+                        firstNumber = (int) (firstNumber * 0.1);
+                        resultLabel.setText(String.valueOf(firstNumber));
+                    }
+
+                } else if (isOperation == true && isSecondNumber == true) {
+                    if (isDot == true) {
+                        postDotNumberDOUBLE = addZeroAtBeginning(postDotNumberINT);
+                        secondNumber += postDotNumberDOUBLE;
+                        memoryNumber = secondNumber;
+                        isDot = false;
+
+                    }
+                    if ((secondNumber - Math.round(secondNumber) > 0)) {
+                        String numberAsText = Double.toString(secondNumber);
+                        String withoutLastDigit = numberAsText.substring(0, numberAsText.length() - 1);
+                        secondNumber = Double.parseDouble(withoutLastDigit);
+                        resultLabel.setText(String.valueOf(secondNumber));
+                    } else {
+                        secondNumber = (int) (secondNumber * 0.1);
+                        resultLabel.setText(String.valueOf(secondNumber));
+                    }
+
+                }
+                break;
             case "%":
                 if (isOperation == false && isSecondNumber == false) {
                     if (isDot == true) {
