@@ -1,5 +1,9 @@
 import javax.swing.*;
+import javax.swing.text.MaskFormatter;
+
 import java.awt.*;
+import java.text.DecimalFormat;
+import java.text.ParseException;
 
 public class Calculator {
     private JLabel resultLabel;
@@ -13,6 +17,7 @@ public class Calculator {
     private double postDotNumberDOUBLE = 0;
     private int postDotNumberINT = 0;
     private int amountOfNumbersAfterDot = 0;
+    private DecimalFormat decimalFormat = new DecimalFormat("#.##########");
 
     public static void main(String[] args) {
         Calculator calculator = new Calculator();
@@ -145,7 +150,7 @@ public class Calculator {
                     resultLabel.setText(String.valueOf((int) firstNumber) + "." + String.valueOf(postDotNumberINT));
                 } else if (isDot == false && isOperation == false) {
                     firstNumber = firstNumber * 10 + Double.parseDouble(button);
-                    resultLabel.setText(String.valueOf(firstNumber));
+                    resultLabel.setText((String.valueOf(firstNumber)));
                 }
                 break;
             case "+":
