@@ -15,9 +15,9 @@ public class Main {
                 new ZProstokąt(3, 4, '^', '$')
         };
 
-        for (Prostokąt p : pr) // for (int i = 0; i < pr.length; i++)
+        for (Prostokąt p : pr)
             try {
-                p.rysuj(); // pr[i].rysuj();
+                p.rysuj();
             } catch (ProstokatException e) {
                 System.out.println(e.getMessage());
             }
