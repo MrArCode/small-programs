@@ -57,11 +57,11 @@ def insert_coin():
 def make_coffee(action):
     global client_money
     if resources["coffee"] < MENU[action]["ingredients"]["coffee"]:
-        return print("Sorry not enouht coffe")
+        return print("Sorry not enough coffe")
     elif resources["milk"] < MENU[action]["ingredients"]["milk"]:
-        return print("Sorry not enouht milk")
+        return print("Sorry not enough milk")
     elif resources["water"] < MENU[action]["ingredients"]["water"]:
-        return print("Sorry not enouht water")
+        return print("Sorry not enough water")
     else:
         print(f"Here is ${client_money - MENU[action]["cost"]} in change")
         print(f"Here is your {action}")
